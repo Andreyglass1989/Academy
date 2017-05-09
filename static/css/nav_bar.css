@@ -1,0 +1,118 @@
+.nav-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #2c3840;
+  background-image: url(../image/panel.jpg);
+  height: 75px;
+  font-family: "Titillium Web", sans-serif;
+  margin-bottom: 75px; }
+
+  .nav-bar .nav-bar-logo {
+    padding: 1.8rem; }
+
+  .nav-bar li {
+   background: #2c3840; }
+
+  .nav-bar a {
+    color: #fff;
+    transition: color 0.2s ease-in; }
+
+    .nav-bar a:hover {
+      color: #a8b8c3; }
+
+  @media screen and (max-width: 39.9375em) {
+
+    .nav-bar {
+      height: 53.57143px; } }
+
+  .nav-bar .offcanvas-trigger {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.6rem;
+    color: #fff;
+    font-family: "Titillium Web", sans-serif;
+    text-transform: uppercase;
+    background-color: #566d7c;
+    transition: background-color 0.2s ease-in;
+    cursor: pointer; }
+
+    .nav-bar .offcanvas-trigger .offcanvas-trigger-text {
+      margin-right: 0.25rem;
+      margin-top: 0.25rem; }
+
+    .nav-bar .offcanvas-trigger:hover {
+      background-color: #6b879a; }
+
+    @media screen and (max-width: 39.9375em) {
+
+      .nav-bar .offcanvas-trigger {
+        padding: 0.9rem; } }
+
+.off-canvas {
+  background: #222b31;
+  padding: 20px;
+  color: #fff;
+  font-family: "Titillium Web", sans-serif; }
+
+  .off-canvas > .menu {
+    margin-bottom: 1rem; }
+
+  .off-canvas .menu a {
+    color: rgba(255, 255, 255, 0.6);
+    padding-top: 7px;
+    padding-bottom: 7px;
+    transition: color .2s ease-in; }
+
+    .off-canvas .menu a:hover {
+     color: #fff; }
+
+  .off-canvas .fa {
+    color: #fff; }
+
+  .off-canvas .is-accordion-submenu-parent > a::after {
+    border-color: rgba(255, 255, 255, 0.6) transparent transparent; }
+
+  .off-canvas .social-links {
+    margin-left: 20px; }
+
+    .off-canvas .social-links li {
+      margin-right: 5px; }
+
+    .off-canvas .social-links a:hover .fa {
+      color: #bfbfbf;
+      transition: color .2s ease-in; }
+
+    .off-canvas .social-links .fa {
+      font-size: 2.2rem; }
+
+.body-info {
+  text-align: center;
+  font-family: "Titillium Web", sans-serif;
+  color: #2c3840; }
+
+  .body-info .button {
+    margin: 1rem 0;
+    padding: 0.85em 2em; }
+
+.is-open + .off-canvas-content .hamburger .line:nth-child(1),
+.is-open + .off-canvas-content .hamburger .line:nth-child(3) {
+  width: 12px; }
+
+.is-open + .off-canvas-content .hamburger .line:nth-child(1) {
+  transform: translateX(-5px) rotate(-45deg); }
+
+.is-open + .off-canvas-content .hamburger .line:nth-child(3) {
+  transform: translateX(-5px) rotate(45deg); }
+
+.hamburger .line {
+  width: 20px;
+  height: 2px;
+  background-color: #fff;
+  display: block;
+  margin: 3px auto;
+  transition: all 0.3s ease-in-out; }
+
+  .hamburger .line:last-child {
+    margin-bottom: 0; }

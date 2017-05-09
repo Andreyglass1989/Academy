@@ -1,0 +1,66 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>{% block title %}document{% endblock title %}</title>
+	<link rel="stylesheet" href="{% static 'css/foundation.min.css' %}" crossorigin="anonymous">
+	<link href="{% static 'css/nav_bar.css' %}" rel="stylesheet" type="text/css">
+
+<!-- Optional theme -->
+
+	<link href="{% static 'fonts/Indie_Flower/IndieFlower.ttf'%}" rel="stylesheet">
+
+<!-- Latest compiled and minified JavaScript -->
+	<script src="{% static 'js/jquery-3.2.0.min.js' %}" crossorigin="anonymous"></script>
+
+	{% block CSS %}
+	{% endblock CSS %}
+</head>
+<body>
+<!--na-bar-->
+
+<div class="off-canvas-content" data-off-canvas-content>
+  <div class="nav-bar">
+      <div class="nav-bar-left">
+        <a class="nav-bar-logo" href="{% url 'room:main' %}"><img class="logo" src="{% static 'image/glove_full.png' %}" width='150px' height='30px'></a>
+      </div>
+      <div class="nav-bar-right">
+        <ul class="menu">
+
+          <li style="hide-for-small-only"><a href="{% url 'room:main' %}">Rooms</a></li>
+          <li style="hide-for-small-only"><a href="{% url 'room:create_players' %}">Characters</a></li>
+          <li style="hide-for-small-only"><a href="{% url 'room:enemy' %}">Enemy</a></li>
+          <li class="hide-for-small-only"><a href="#"><img class="logo" src="{% static 'image/name_orange_red.png' %}" width='150px' height='30px'></a></li>
+
+          <li class="hide-for-small-only"><img class="logo" src="{% static 'image/rocky.png' %}" width='50px' height='30px'></li>
+        </ul>
+    </div>
+  </div>
+
+</div>
+
+
+
+<!--end-nav-bar-->
+
+{% block body%}
+
+<!--
+<form action="">
+	Search: <input type="text">
+	<button class="btn btn-success" type="submit">search</button>
+{% for staff in staffs %}
+	<label class="col-sm-4">First Name:{{ staff.first_name }}</label>	
+	<label class="col-sm-3">Last Name:{{ staff.last_name }}</label>
+	<label class="col-sm-2">Position:{{ staff.position }}</label>
+{% endfor %}
+-->
+{% endblock body %}
+
+    {% block scripts %}{% endblock scripts %}
+</body>
+</html>
+
+<!--prefernces - package control - edit - beatufy html      SUBLIME-->

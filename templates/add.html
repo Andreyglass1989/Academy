@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% load static %}
+{% block CSS %}
+ <link href="{% static 'css/bootstrap.css' %}" rel="stylesheet" type="text/css">
+{% endblock CSS %}
+
+{% block title %}Add {{ title }}{% endblock title %}
+
+{% block body%}
+
+<h1>ADD {{ title }}</h1>
+<form method="post">{% csrf_token %}
+    <div class="small-5 large-5" style="margin-left:10px">{{ form.as_p }}</div>
+    <div class="small-5 large-5">
+        <input style="float:right" type="submit" value="Create" /><br></div>
+
+
+</form>
+{% endblock body%}

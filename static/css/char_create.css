@@ -1,0 +1,47 @@
+@import url('https://fonts.googleapis.com/css?family=Handlee|Indie+Flower');
+
+.font_flower{
+ font-family: 'Indie Flower', cursive;
+ color: green;
+ font-size: 32px;
+}
+
+.charactr_div{
+ text-align:left;
+ border-radius: 5px;
+ border: 3px solid blue;
+ height:400px;
+}
+
+.player_div1{
+ background-color: rgba(255, 51, 0, 0.5);
+ background-image:url(../image/comingsoon_blog.png);
+ background-position: center, center;
+ background-repeat: no-repeate;
+ background-size: cover;
+}
+ a:hover{
+ color: red;
+ background-color: rgba(172, 115, 57, 0.5);
+ background-image:url(../image/comingsoon_blog.png);
+ background-position: center, center;
+ background-repeat: no-repeate;
+ background-size: cover;
+}
+
+.player_div2{
+ background-color: rgba(0, 51, 255, 0.5);
+ background-image:url(../image/pingvin.png);
+ background-position: center, center;
+ background-repeat: no-repeate;
+ background-size: cover;
+}
+
+.player_div3{
+ background-color: rgba(255, 51, 0, 0.5);
+ background-image:url(../image/panda.png);
+ background-position: center, center;
+ background-repeat: no-repeate;
+ background-size: cover;
+}
+

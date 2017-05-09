@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block CSS %}
+ <link href="{% static 'css/bootstrap.css' %}" rel="stylesheet" type="text/css">
+{% endblock CSS %}
+
+{% block title %}Remove {{ title }}{% endblock title %}
+
+{% block body%}
+
+<div class="alert alert-danger" role="alert">has been deleted!!!</div>
+<!--<h1 style="margin:10px"><span style="color:red"> *{{ title.name }}* </span> has been deleted!!!</h1>-->
+
+<form method="post">
+    <input style="margin:10px" type="submit" value="Delete"/>
+</form>
+{% endblock body%}

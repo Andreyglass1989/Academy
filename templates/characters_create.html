@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block title %}{{ title }}{% endblock title %}
+{% block CSS %}
+    <link rel="stylesheet" href="{% static 'css/char_create.css' %}"/>
+    <link rel="stylesheet" href ="{% static 'css/main_style_sheet.css' %}"/>
+{% endblock CSS %}
+
+{% block body %}
+
+    <form action="{% url 'room:main' %}" method="POST">{% csrf_token %}
+        Name Room: <div class="small-5"> <input type="text" name="nameRoom"><br/> </div>
+
+        <div class="small-5 large-5 columns player_div1 charactr_div">PLAYER
+            RACE: <select name="raceChar">
+                      {% for race1, race2 in races %}
+                        <option value="{{ race1 }}">{{ race2 }}</option>
+                      {% endfor %}
+                    </select>
+           Name: <input type="text" name="nameChar" placeholder="InputName"></div>
+
+        <div class="small-5 large-5 columns player_div3 charactr_div">ENEMY
+            RACE:
+                    <select name="raceEnem">
+                      {% for race1, race2 in races %}
+                        <option value="{{ race1 }}">{{ race2 }}</option>
+                      {% endfor %}
+                    </select>
+
+            <input type="text" name="nameEnem" placeholder="InputName"></div>
+            <button type="button" class="btn btn-success">!!!OK!!!</button>
+    </form>
+<br>
+
+
+{% for room in rooms %}
+	<div class="col-sm-3 block_blue"> <!--{3/12}-->
+		<div class="col-sm-12">{{ room }}</div>
+		<div class="col-sm-12">{% if room.game_type == "SP" %}
+		<p>Single play</p>{% else %}<p>Multi play</p>{% endif %}</div>
+		<div class="col-sm-12">{{ room.data_begin }}	</div>
+		{% for character in characters %}
+		    {% if character.room == room %}
+				<p>{{character}}</p> race:{{Character.RACE}}
+		    {% endif %}
+		{% endfor %}
+	</div>
+{% endfor %}
+
+
+
+
+
+<!--
+    <h1 align="center">Choose your hero</h1>
+    <div class="font_flower">
+        <a href="#"><div class="small-4 large-4 columns player_div1 charactr_div"><b>Zurb</b></div></a>
+        <div class="small-4 large-4 columns player_div2 charactr_div"><b>pingvin</b></div>
+        <a href="#"><div class="small-4 large-4 columns player_div3 charactr_div"><b>Panda</b></div></a>
+    </div> -->
+{% endblock body %}

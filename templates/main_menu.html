@@ -1,0 +1,82 @@
+{% extends "base.html"%}
+
+{% load static %}
+{% block title %}{{ title }}{% endblock title %}
+{% block CSS %}
+ <link href="{% static 'css/main_style_sheet.css' %}" rel="stylesheet" type="text/css">
+ <link href="{% static 'css/bootstrap.css' %}" rel="stylesheet" type="text/css">
+ <link rel="stylesheet" type="text/css" href="{% static 'css/second_list1.css' %}">
+{% endblock CSS %}
+
+{% block body %}
+<!-- massages sucsess  START -->
+{% if messages %}
+<div style="margin: 5px" class="messages">
+    {% for message in messages %}
+      <div class="alert alert-success" role="alert"><span class="glyphicon glyphicon-ok" aria-hidden="true"> {{ message }}</span></div>
+    {% endfor %}
+</div>
+{% endif %}
+
+{% csrf_token %}
+
+<!--<h1>ADD ROOM</h1>
+<form method="post">
+ <!--  {{ form.as_p }} -->
+
+<!--    {{ model_form.as_p }}
+
+</form>
+<!-- massages sucsess END -->
+
+<!--	{% for staff in staffs %}
+	<p>First Name:{{ staff.first_name }}</p>
+	<p>Last Name:{{ staff.last_name }}</p>
+	<p>Position:{{ staff.position }}</p>
+	{% endfor %} -->
+<a href="/add_room"><button type="button" class="btn btn-primary" data-toggle="popover" title="create new Room"
+		data-content="Right?" style="margin: 0px 0px 5px 10px; "><span class="glyphicon glyphicon-plus" aria-hidden="true"> </span> Add Room</button></a>
+
+<br>
+<!--
+{% for room in rooms %}
+	<div class="col-sm-3 block_blue"> <!--{3/12}-->
+<!--	<div class="col-sm-12">{{ room }}</div>
+		<div class="col-sm-12">{% if room.game_type == "SP" %}
+		<p>Single play</p>{% else %}<p>Multi play</p>{% endif %}</div>
+		<div class="col-sm-12">{{ room.data_begin }}</div>
+		{% for character in characters %}
+		    {% if character.room == room %}
+				<p>{{character}}</p>
+		    {% endif %}
+		{% endfor %}
+	</div>
+{% endfor %}
+-->
+
+{% for room in rooms %}
+    <div class="small-4 column"><a href="{{room.id}}">
+        <div class="col-sm-2 thumbs">
+            {% if room.image %}
+                <img src="{{ room.image.url }}" alt="{{ room.name }}" width="100px" height="63px"  />
+            {% else %}
+                <img alt="{{ room.name }}" width="100px" height="63px"/>NO IMAGE
+            {% endif %}
+            <div class="caption"><span class="info">{{ room.game_type}}<br></span>
+            <span class="title"><b>{{ room.name }}</b></span>
+                <a style="float:left; font-size:16px" href="/edit/{{ room.id }}"><span class="glyphicon glyphicon-pencil" aria-hidden="true">Edit</span></a>
+                <a style="float:right; font-size:16px" href="/remove/{{ room.id }}"><span class="glyphicon glyphicon-remove" aria-hidden="true">Delete</span></a>
+            </div>
+            </div>
+    </a></div>
+{% endfor %}
+
+{% endblock body %}
+
+
+
+<!--Приоритеты
+id = 100
+class =10
+p, div =1
+-->

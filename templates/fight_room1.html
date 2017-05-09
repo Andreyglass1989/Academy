@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block title %}{{ title }}{% endblock title %}
+
+{% block CSS %}
+    <link rel="stylesheet" href="{% static 'css/foundation.css' %}"/>
+    <link rel="stylesheet" href="{% static 'css/fight_style.css' %}"/>
+<style>
+    .player{
+        background-image: url({% static 'image/comingsoon_blog.png' %});
+        background-repeat: no-repeat;
+        background-position: center center;
+        beckground-size: 100%;
+    }
+    .player>div{
+        height:400px
+    }
+    .enemy{
+        background-image: url({% static 'image/Chafer1.png' %});
+        background-repeat: no-repeat;
+        beckground-size: 100%;
+    }
+    .enemy>div{
+        height:400px
+    }
+
+    .background-room{
+        background-image: url({% static 'image/Foundation-6-Intro-IMG.jpg' %});
+        background-repeat: no-repeat;
+        beckground-size: containe;
+    }
+
+    .clicked{
+        background-color:rgba(255, 0, 0.25);
+    }
+</style>
+
+{% endblock CSS %}
+
+
+
+{% block body %}
+    <div class="show-for-large-up">
+        <div class="row">
+            <div class="small-6 column" style="padding:5px">
+                <div class="small-2 column">Name</div>
+                <div class="small-10 column healthbar">
+                    <div class="health_div" style="float:left; width:40%"></div>
+                </div>
+
+            </div>
+            <div class="small-6 column" style="padding:5px">
+                <div class="small-10 column healthbar">
+                    <div class="health_div" style="float:right; width:70%"></div>
+                </div>
+                <div class="small-2 column">Name</div>
+            </div>
+        </div>
+            <div class="row background-room">
+                <div class="small-6 column player">
+                        <div class="small-12 column click_me"></div>
+                        <div class="small-4 column click_me"></div>
+                        <div class="small-4 column click_me"></div>
+                        <div class="small-4 column click_me"></div>
+                        <div class="small-12 column click_me"></div>
+                </div>
+                <div class="small-6 column enemy">
+                        <div class="small-12 column click_me"></div>
+                        <div class="small-4 column click_me"></div>
+                        <div class="small-4 column click_me"></div>
+                        <div class="small-4 column click_me"></div>
+                        <div class="small-12 column click_me"></div>
+                </div>
+    </div>
+
+{% block scripts %}
+        <script src="{% static 'js/fight1.js' %}"></script>
+{% endblock scripts %}
+
+{% endblock body %}

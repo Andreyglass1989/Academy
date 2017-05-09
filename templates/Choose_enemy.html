@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block title %}{{ title }}{% endblock title %}
+
+{% block CSS %}
+ <style>
+     #my
+    {
+	 	border: 2px solid #3E3E3F;
+	 	margin-top: 10px;
+	 	border-radius: 4px;
+	 	position: center, center;
+        background-repeat: no-repeate;
+        background-size: cover;
+        height: 500px;
+	 }
+
+
+ </style>
+{% endblock CSS %}
+
+{% block body %}
+
+ {% for it in items %}
+    <a href="{{it.id}}">
+        <div id="my" class="small-4 columns">
+            <div class="small-12 columns">
+                <img src="{{ it.image.url }}" alt="{{ it.name }}" width=300px height=200px/>
+            </div>
+            <div class="small-12 columns" id="font">
+                <p>{{ it.name }}</p>
+                <p>Room: {{it.room}}</p>
+            </div>
+        </div>
+    </a>
+ {% endfor %}
+
+{% endblock body %}

@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block title %}{{ title }}{% endblock title %}
+
+{% block CSS %}
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}"/>
+    <link rel="stylesheet" href="{% static 'css/fight_style.css' %}"/>
+<style>
+    .player{
+        background-image: url({% static 'image/enemy/Chafer.png' %});
+        background-repeat: no-repeat;
+        background-position: center center;
+        beckground-size: 100%;
+    }
+    .player>div{
+        height:150px
+    }
+    .enemy{
+        background-image: url({% static 'image/enemy/Pirate-av.png' %});
+        background-repeat: no-repeat;
+        background-position: center center;
+        beckground-size: 100%;
+    }
+    .enemy>div{
+        height:150px;
+    }
+
+    .background-room{
+
+    }
+
+    .clicked_player{
+        background-color:rgba(255, 0, 0, 0.25)
+    }
+
+    .clicked_enemy{
+        background-color:rgba(102, 153, 255,0.25)
+    }
+
+</style>
+
+{% endblock CSS %}
+
+
+
+{% block body %}
+
+{% if messages %}
+<div style="margin: 5px" class="messages">
+    {% for message in messages %}
+      <div class="alert alert-success" role="alert"><span class="glyphicon glyphicon-ok" aria-hidden="true"> {{ message }}</span></div>
+    {% endfor %}
+</div>
+{% endif %}
+
+    <div class="container-fluid">
+
+            <div class="col-xs-6" style="padding:0px">
+                <div class="col-xs-2">Name</div>
+                <div class="col-xs-10 healthbar">
+                    <div class="health_div player" style="float:left; width:40%"></div>
+                </div>
+            </div>
+            <div class="col-xs-6" style="padding:0px">
+                <div class="col-xs-10 healthbar">
+                    <div class="health_div enemy" style="float:right; width:70%"></div>
+                </div>
+                <div class="col-xs-2">Name</div>
+            </div>
+
+            <div class="background-room">
+                <div class="col-xs-6 player">
+                        <div class="col-xs-12 click_me_player" data-part="0"></div>
+                        <div class="col-xs-4 click_me_player" data-part="2"></div>
+                        <div class="col-xs-4 click_me_player" data-part="1"></div>
+                        <div class="col-xs-4 click_me_player" data-part="3"></div>
+                        <div class="col-xs-12 click_me_player" data-part="4"></div>
+                </div>
+                <div class="col-xs-6 enemy">
+                        <div class="col-xs-12 click_me_enemy" data-part="0"></div>
+                        <div class="col-xs-4 click_me_enemy" data-part="2"></div>
+                        <div class="col-xs-4 click_me_enemy" data-part="1"></div>
+                        <div class="col-xs-4 click_me_enemy" data-part="3"></div>
+                        <div class="col-xs-12 click_me_enemy" data-part="4"></div>
+                </div>
+            </div>
+            <div><button id="fight" class="btn btn-danger">Attack</button></div>
+    </div>
+
+{% endblock body %}
+
+{% block scripts %}<script src="{% static 'js/fight1.js' %}"></script>{% endblock scripts %}

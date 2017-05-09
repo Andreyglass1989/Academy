@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block title %}Edit {{ title }}{% endblock title %}
+
+{% block body%}
+
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+
+
+<h1>EDIT {{ title }}</h1>
+<form method="post">{% csrf_token %}
+    <div class="small-5 large-5" style="margin-left:10px">{{ form.as_p }}</div>
+    <div class="small-5 large-5"><input style="float:right" type="submit" value="Change" /><br></div>
+
+</form>
+{% endblock body%}
