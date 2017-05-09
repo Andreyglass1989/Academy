@@ -9,7 +9,7 @@ class Room( models.Model ):
     GAME_TYPES = (("SP","Singleplay"),("MP","Multiplay"))
     name = models.CharField( max_length = 50 )
     game_type = models.CharField( max_length = 3, choices = GAME_TYPES, default="SP")
-    data_begin = models.DateField( auto_now = False, null=True )
+    data_begin = models.DateField( auto_now = True, null=True )
     data_end = models.DateField( blank = True, null=True )
     image = models.ImageField(upload_to='Room', )
 
