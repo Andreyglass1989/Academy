@@ -55,7 +55,7 @@
 -->
 
 {% for room in rooms %}
-    <div class="small-4 column"><a href="{{room.id}}">
+    <div class="small-4 column"><a href="/room_detail/{{room.id}}/">
         <div class="col-sm-2 thumbs">
             {% if room.image %}
                 <img src="{{ room.image.url }}" alt="{{ room.name }}" width="100px" height="63px"  />

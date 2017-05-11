@@ -22,7 +22,7 @@ urlpatterns = [
     url(r'^add_room/$', RoomCreateView.as_view(), name="add_room"),
     url(r'^edit/(?P<pk>\d+)/$', RoomUpdateView.as_view(), name='update_room'),
     url(r'^remove/(?P<pk>\d+)/$', RoomDeleteView.as_view(), name='remove_room'),
-    url(r'^(?P<pk>\d+)/$', RoomDetailView.as_view(), name='detail'),
+    url(r'^room_detail/(?P<pk>\d+)/$', RoomDetailView.as_view(), name='detail'),
     # ---NEW urls for Class Base View = Room #
 
     #  end change Room #
@@ -45,8 +45,9 @@ urlpatterns = [
 
     # url(r'^choose_character/(?P<pk><z>\d+)/$', edit_character, name='edit_character'),
     url(r'^enemy/$', choose_enemy, name="enemy"),
-    url(r'^fight/$', fight_room, name="fight"),
+    url(r'^fight', fight_room, name="fight"),
     url(r'^attack/$', attack),
+    #url(r'^attack1/$', attack1, name="attack1"),
    # url(r'^apply/$', course_apply),
    # url(r'^create_room/$', show_rooms),
    # url(r'^/createplayers', create_players),

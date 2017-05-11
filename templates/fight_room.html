@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="{% static 'css/fight_style.css' %}"/>
 <style>
     .player{
-        background-image: url({% static 'image/enemy/Chafer.png' %});
+        background-image: url({{ player1.image.url }});
         background-repeat: no-repeat;
         background-position: center center;
         beckground-size: 100%;
@@ -18,7 +18,7 @@
         height:150px
     }
     .enemy{
-        background-image: url({% static 'image/enemy/Pirate-av.png' %});
+        background-image: url({{ enemy1.image.url }});
         background-repeat: no-repeat;
         background-position: center center;
         beckground-size: 100%;
@@ -28,7 +28,7 @@
     }
 
     .background-room{
-
+        background-image: url({% static 'image/Foundation-6-Intro-IMG.jpg' %});
     }
 
     .clicked_player{
@@ -50,33 +50,62 @@
 {% if messages %}
 <div style="margin: 5px" class="messages">
     {% for message in messages %}
-      <div class="alert alert-success" role="alert"><span class="glyphicon glyphicon-ok" aria-hidden="true"> {{ message }}</span></div>
+      <div class="alert alert-danger" role="alert"><span class="glyphicon glyphicon-ok" aria-hidden="true"> {{ message }}</span></div>
     {% endfor %}
 </div>
 {% endif %}
 
-    <div class="container-fluid">
+        <div class="container-fluid">
 
             <div class="col-xs-6" style="padding:0px">
-                <div class="col-xs-2">Name</div>
-                <div class="col-xs-10 healthbar">
+                <div class="col-xs-3 player_name" data-id="{{ player1.id }}" style="font-size:20px">{{ player1.name }}</div>
+                <div class="col-xs-9 progress">
+                  <div class="progress-bar progress-bar-info progress-bar-striped active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: {{player1.health}}%">
+                    <span class="sr-only">45% Complete</span>
+                  </div>
+                </div>
+
+            </div>
+
+
+    <!--
+                <div class="col-xs-3" style="font-size:20px">{{ player1.name }}</div>
+                <div class="col-xs-9 healthbar">
                     <div class="health_div player" style="float:left; width:40%"></div>
                 </div>
-            </div>
+            </div> -->
             <div class="col-xs-6" style="padding:0px">
-                <div class="col-xs-10 healthbar">
-                    <div class="health_div enemy" style="float:right; width:70%"></div>
+                <div class="col-xs-9 progress">
+                  <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: {{ enemy1.health }}%">
+                    <span class="sr-only">40% Complete (success)</span>
+                  </div>
                 </div>
-                <div class="col-xs-2">Name</div>
+                 <div class="col-xs-3 enemy_name" data-id="{{ enemy1.id }}" style="font-size:20px">{{ enemy1.name }}</div>
             </div>
 
+         <!--       <div class="col-xs-9 healthbar">
+                    <div class="health_div enemy" style="float:right; width:70%"></div>
+                </div>
+                <div class="col-xs-3" style="font-size:20px">{{ enemy1.name }}</div>
+            </div>
+        -->
+            enemy health ={{ enemy1.health }} , {{heathEnemy}}
+            player health = {{ player1.health }}
             <div class="background-room">
+
                 <div class="col-xs-6 player">
                         <div class="col-xs-12 click_me_player" data-part="0"></div>
                         <div class="col-xs-4 click_me_player" data-part="2"></div>
                         <div class="col-xs-4 click_me_player" data-part="1"></div>
                         <div class="col-xs-4 click_me_player" data-part="3"></div>
                         <div class="col-xs-12 click_me_player" data-part="4"></div>
+<!--
+                        <label class="checkbox-inline"><input type="checkbox" name="body_part_player" value="0">Head</label>
+                        <label class="checkbox-inline"><input type="checkbox" name="body_part_player" value="2">Torso</label>
+                        <label class="checkbox-inline"><input type="checkbox" name="body_part_player" value="1">Left hand</label>
+                        <label class="checkbox-inline"><input type="checkbox" name="body_part_player" value="3">Right hand</label>
+                        <label class="checkbox-inline"><input type="checkbox" name="body_part_player" value="4">Lags</label>
+-->
                 </div>
                 <div class="col-xs-6 enemy">
                         <div class="col-xs-12 click_me_enemy" data-part="0"></div>
@@ -84,11 +113,36 @@
                         <div class="col-xs-4 click_me_enemy" data-part="1"></div>
                         <div class="col-xs-4 click_me_enemy" data-part="3"></div>
                         <div class="col-xs-12 click_me_enemy" data-part="4"></div>
+<!--
+                        <label class="checkbox-inline"><input type="checkbox" name="body_part_enemy" value="0">Head</label>
+                        <label class="checkbox-inline"><input type="checkbox" name="body_part_enemy" value="2">Torso</label>
+                        <label class="checkbox-inline"><input type="checkbox" name="body_part_enemy" value="1">Left hand</label>
+                        <label class="checkbox-inline"><input type="checkbox" name="body_part_enemy" value="3">Right hand</label>
+                        <label class="checkbox-inline"><input type="checkbox" name="body_part_enemy" value="4">Lags</label>
+-->
                 </div>
+
             </div>
             <div><button id="fight" class="btn btn-danger">Attack</button></div>
-    </div>
+        <a href="/" title=""><button class="btn">Return to rooms</button></a>
 
+        </div>
+
+<!--
+            {% if player1.image %}
+                <img src="{{ player1.image.url }}" alt="{{ player1.name }}" width="250px" height="313px"  />
+            {% else %}
+                <img alt="{{ player1.name }}" width="100px" height="63px"/>NO IMAGE
+            {% endif %}
+
+            {% if enemy1.image %}
+                <img src="{{ enemy1.image.url }}" alt="{{ enemy1.name }}" width="250px" height="313px"  />
+             {% else %}
+                <img alt="{{ enemy1.name }}" width="100px" height="63px"/>NO IMAGE
+            {% endif %}
+<!--<input type="submit" value="Attack1">-->
+
+</form>
 {% endblock body %}
 
 {% block scripts %}<script src="{% static 'js/fight1.js' %}"></script>{% endblock scripts %}

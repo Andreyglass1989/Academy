@@ -25,7 +25,7 @@ enemy = Character_Demo("HEEEEH","Wolf")
 # class ModelRoomAdd(forms.ModelForm):
 #     class Meta:
 #         model =  Room
-#         exclude = ['data_begin', 'data_end', ]
+#         exclude = ['data_begin', 'data_end', ](
 
 class RoomListView(ListView):
     model = Room
@@ -90,8 +90,17 @@ def choose_enemy(request):
 
 
 def fight_room( request ):
-    context={ "title":"Fight room" }
-    return render(request, "fight_room.html", context)
+    if request.method == "POST":
+        p1 = request.POST.get("player_id")
+        p2 = request.POST.get("enemy_id")
+        print(p1)
+        print(p2)
+        player1 = Character.objects.get(id = p1)
+        enemy1 = Character.objects.get(id = p2)
+        print("player=%s , enemy=%s" %(player1.name,enemy1.name))
+        context={ "player1":player1, "enemy1":enemy1 }
+        return render(request, "fight_room.html", context)
+
 
 
 def attack ( request ):
@@ -99,58 +108,41 @@ def attack ( request ):
    # enemy.health = 100
    # player.health = 100
    if request.is_ajax():
-       while True:
-           part_enemy = request.GET.get("partEnemy")
-           part_player = request.GET.get("partPlayer")
-           print(part_player)
-           print(player.health)
-           print(part_enemy)
-           print(enemy.health)
-           target=enemy.choice_target(random.randint(0,4))
-           block=enemy.body_block(random.randint(0,4))
-           print("enemy choice target = %s" %target)
-           print("enemy block = %s" %block)
+        player_id = request.GET.get("playerId")
+        enemy_id = request.GET.get("enemyId")
+        print("player_id = %s, enemy_id = %s" %(player_id,enemy_id))
+        player = Character.objects.get(id=player_id)
+        enemy = Character.objects.get(id=enemy_id)
+        part_enemy = request.GET.get("partEnemy")
+        part_player = request.GET.get("partPlayer")
+        enemy.choice_target(random.randint(0, 4))
+        enemy.body_block(random.randint(0, 4))
+        player.choice_target(int(part_enemy))
+        player.body_block(int(part_player))
+        enemy1=enemy.attack(player)
+        player1=player.attack(enemy)
+        print("Player")
+        print("Target:",player.BODY_PARTS[player.target])
+        print("Block:",player.BODY_PARTS[player.block_part])
+        print("Health:", player.health)
+        print("enemy")
+        print("Target:",enemy.BODY_PARTS[enemy.target])
+        print("Block:",enemy.BODY_PARTS[enemy.block_part])
+        print("Health:", enemy.health)
 
-           player.choice_target(int(part_enemy))
-           player.body_block(int(part_player))
-           enemy.attack(player)
-           player.attack(enemy)
+        context = { "heathEnemy": enemy.health,
+                    "healthPlayer": player.health,
+                  }
+        jsresp = JsonResponse(context)
+        print(jsresp.content)
+        if enemy.health <= 0 or player.health <= 0:
+            print("GameOver")
+            messages.success(request, "GameOver!")
+            return redirect("/")
 
-           if enemy.body_block == 0:
-               logger.debug("Block enemy Head")
-               print("Block enemy Head")
-           elif enemy.body_block == 1:
-               logger.debug("Block enemy left hand")
-               print("Block enemy left hand")
-           elif enemy.body_block == 2:
-               logger.debug("Block enemy torse")
-               print("Block enemy torse")
-           elif enemy.body_block == 3:
-               logger.debug("Block enemy right hand")
-               print("Block enemy right hand")
-           elif enemy.body_block == 4:
-               logger.debug("Block enemy foot")
-               print("Block enemy foot")
+        return HttpResponse(jsresp.content, content_type="text/html") #render(request, "fight_room.html", context)#
 
-           context = { "heathEnemy": enemy.health,
-                       "healthPlayer": player.health,
-                       }
-           jsresp = JsonResponse(context)
-           if enemy.health <= 0:
-               print("Game over! You win!")
-               logger.debug("Game over! You win!")
-               messages.success(request, "Game over! You win!")
-               print(jsresp.content)
-               break
-           elif player.health <=0:
-               print("You lost! Game over!")
-               logger.debug("You lost! Game over!")
-               messages.success(request, "You lost! Game over!")
-               print(jsresp.content)
-               break
-           print(jsresp.content)
 
-       return render(request, 'fight_room.html')#HttpResponse(jsresp.content, content_type="text/html")
         #
 
 

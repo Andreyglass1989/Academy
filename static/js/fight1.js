@@ -17,14 +17,16 @@ $(document).ready(function(){
             data:{
                 'partEnemy':$(".clicked_enemy").data('part'),
                 'partPlayer':$(".clicked_player").data('part'),
+                'enemyId':$(".player_name").data('id'),
+                'playerId':$(".enemy_name").data('id'),
             },
             cache:false,
             success:
             function(data){
                 console.log(data)
                 var obj = jQuery.parseJSON( data );
-                $(".enemy").css("width",data.healthEnemy+"%");
-                $(".player").css("width",data.healthPlayer+"%");
+                $(".enemy").css("width",obj.healthEnemy+"%");
+                $(".player").css("width",obj.healthPlayer+"%");
             }
 
     });
