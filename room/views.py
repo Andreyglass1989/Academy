@@ -1,4 +1,5 @@
-from django.shortcuts import render, redirect
+from django.http import HttpResponseRedirect
+from django.shortcuts import render, redirect, render_to_response
 from django.http import JsonResponse, HttpResponse
 from room.models import Room, Character
 from .character import Character_Demo
@@ -105,22 +106,20 @@ def fight_room( request ):
 
 def attack ( request ):
    global player, enemy
-   # enemy.health = 100
-   # player.health = 100
    if request.is_ajax():
         player_id = request.GET.get("playerId")
         enemy_id = request.GET.get("enemyId")
         print("player_id = %s, enemy_id = %s" %(player_id,enemy_id))
-        player = Character.objects.get(id=player_id)
-        enemy = Character.objects.get(id=enemy_id)
+        # player = Character.objects.get(id=player_id)
+        # enemy = Character.objects.get(id=enemy_id)
         part_enemy = request.GET.get("partEnemy")
         part_player = request.GET.get("partPlayer")
         enemy.choice_target(random.randint(0, 4))
         enemy.body_block(random.randint(0, 4))
         player.choice_target(int(part_enemy))
         player.body_block(int(part_player))
-        enemy1=enemy.attack(player)
-        player1=player.attack(enemy)
+        enemy.attack(player)
+        player.attack(enemy)
         print("Player")
         print("Target:",player.BODY_PARTS[player.target])
         print("Block:",player.BODY_PARTS[player.block_part])
@@ -129,18 +128,19 @@ def attack ( request ):
         print("Target:",enemy.BODY_PARTS[enemy.target])
         print("Block:",enemy.BODY_PARTS[enemy.block_part])
         print("Health:", enemy.health)
-
         context = { "heathEnemy": enemy.health,
                     "healthPlayer": player.health,
-                  }
-        jsresp = JsonResponse(context)
-        print(jsresp.content)
+                    }
         if enemy.health <= 0 or player.health <= 0:
             print("GameOver")
             messages.success(request, "GameOver!")
-            return redirect("/")
+            # msg = "GAME OVER!!!"
+            # context ={ "msg":msg }
+            return HttpResponseRedirect("/")
 
-        return HttpResponse(jsresp.content, content_type="text/html") #render(request, "fight_room.html", context)#
+        jsresp = JsonResponse(context)
+        print(jsresp.content)
+        return HttpResponseRedirect("fight_room.html", context)#HttpResponse(jsresp.content, content_type="text/html") ##
 
 
         #
