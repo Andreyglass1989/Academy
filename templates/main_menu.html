@@ -1,6 +1,7 @@
 {% extends "base.html"%}
 
 {% load static %}
+
 {% block title %}{{ title }}{% endblock title %}
 {% block CSS %}
  <link href="{% static 'css/main_style_sheet.css' %}" rel="stylesheet" type="text/css">
@@ -34,10 +35,12 @@
 	<p>Last Name:{{ staff.last_name }}</p>
 	<p>Position:{{ staff.position }}</p>
 	{% endfor %} -->
-<a href="/add_room"><button type="button" class="btn btn-primary" data-toggle="popover" title="create new Room"
-		data-content="Right?" style="margin: 0px 0px 5px 10px; "><span class="glyphicon glyphicon-plus" aria-hidden="true"> </span> Add Room</button></a>
+{% if username %}
+    <a href="/add_room"><button type="button" class="btn btn-primary" data-toggle="popover" title="create new Room"
+            data-content="Right?" style="margin: 0px 0px 5px 10px; "><span class="glyphicon glyphicon-plus" aria-hidden="true"> </span> Add Room</button></a>
 
-<br>
+    <br>
+{% endif %}
 <!--
 {% for room in rooms %}
 	<div class="col-sm-3 block_blue"> <!--{3/12}-->
@@ -54,6 +57,9 @@
 {% endfor %}
 -->
 
+
+
+
 {% for room in rooms %}
     <div class="small-4 column"><a href="/room_detail/{{room.id}}/">
         <div class="col-sm-2 thumbs">
@@ -64,12 +70,69 @@
             {% endif %}
             <div class="caption"><span class="info">{{ room.game_type}}<br></span>
             <span class="title"><b>{{ room.name }}</b></span>
+                {% if username %}
                 <a style="float:left; font-size:16px" href="/edit/{{ room.id }}"><span class="glyphicon glyphicon-pencil" aria-hidden="true">Edit</span></a>
                 <a style="float:right; font-size:16px" href="/remove/{{ room.id }}"><span class="glyphicon glyphicon-remove" aria-hidden="true">Delete</span></a>
+                {% endif %}
             </div>
             </div>
     </a></div>
 {% endfor %}
+<p></p>
+
+
+<!--{% if is_paginated %}
+	<ul class="pagination text-center" role="navigation" aria-label="Pagination">
+		<span class="step-links">
+
+			{% if page_obj.has_previous %}
+               <li><a href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+               </a></li>
+            {% else %}
+                <li class="disabled">
+                <span aria-hidden="true">&laquo;</span>
+               </a></li>
+			{% endif %}
+
+
+            <li class=""><span class="current">Page {{ page_obj.number }} of {{ paginator.num_pages }}.</span></li>
+
+			{% if page_obj.has_next %}
+              <li><a href="?page={{ page_obj.next_page_number }}" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span> </li>
+				<!--<a href="?page={{ page_obj.next_page_number }}">next</a>-->
+<!--           {% else %}
+                <li class="disabled">
+                <span aria-hidden="true">&raquo;</span>
+               </a></li>
+			{% endif %}
+		</span>
+	</ul>
+{% endif %}
+-->
+
+{% if is_paginated %}
+        <ul style="float:right; " class="pagination pagination-centered">
+            {% if page_obj.has_previous %}
+                <li><a href="?page=1"><<</a></li>
+                <li><a href="?page={{ page_obj.previous_page_number }}"><</a></li>
+            {% endif %}
+
+            {% for i in paginator.page_range %}
+                <li {% if page_obj.number == i %} class="active" {% endif %}><a href="?page={{i}}">{{i}}</a></li>
+            {% endfor %}
+
+
+            {% if page_obj.has_next %}
+                <li><a href="?page={{ page_obj.next_page_number }}">></a></li>
+                <li><a href="?page={{ page_obj.paginator.num_pages }}">>></a></li>
+            {% endif %}
+            <li class=""><span class="current">Page {{ page_obj.number }} of {{ paginator.num_pages }}.</span></li>
+        </ul>
+    {% endif %}
+
+
 
 {% endblock body %}
 

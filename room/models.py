@@ -3,15 +3,17 @@ from datetime import datetime
 from django.db import models
 
 
+
 # Create your models here.
+
 
 class Room( models.Model ):
     GAME_TYPES = (("SP","Singleplay"),("MP","Multiplay"))
     name = models.CharField( max_length = 50 )
     game_type = models.CharField( max_length = 3, choices = GAME_TYPES, default="SP")
     data_begin = models.DateField( auto_now = True, null=True )
-    data_end = models.DateField( blank = True, null=True )
-    image = models.ImageField(upload_to='Room', )
+    data_end = models.DateField( blank = True, null=False )
+    image = models.ImageField(upload_to='Room/%Y-%m-%d/' )
 
     def __str__(self):
         return self.name
@@ -34,7 +36,7 @@ class Character( models.Model ):
     name = models.CharField(max_length=50)
     BODY_PARTS = ["Head", "Torso", "Left hand", "Right hand", "Lags"]
     race = models.CharField(max_length=3, choices=RACE)
-    image = models.ImageField(upload_to='Character' )
+    image = models.ImageField(upload_to='Character/%Y-%m-%d/' )
 
     def __unicode__(self):
         return self.name
@@ -56,13 +58,13 @@ class Character( models.Model ):
 
     def hit(self, target):
         if target == 0:
-            self.health -= 50
-        elif target == 1:
-            self.health -= 40
-        elif 2 <= target <= 3:
             self.health -= 10
+        elif target == 1:
+            self.health -= 8
+        elif 2 <= target <= 3:
+            self.health -= 4
         elif target == 4:
-            self.health -= 20
+            self.health -= 9
 
     def attack(self, enemy):
         print(enemy.block_part)

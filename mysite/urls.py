@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
-#from .views import base
+from .views import winner
 from django.conf import settings
 from django.conf.urls.static import static
 #import staff.urls
@@ -25,6 +25,8 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     # url(r'^base/', base),
     url(r'^', include("room.urls")),
+    url(r'^auth/', include("login_user.urls")),
+    url(r'^winner/', winner, name="winner"),
     #url(r'^main_menu/', main_menu),
 ]
 if settings.DEBUG:

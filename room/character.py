@@ -13,13 +13,13 @@ class Character_Demo:
 
     def hit(self, target):
         if target == 0:
-            self.health -= 50
+            self.health -= 15
         elif target == 1:
-            self.health -= 40
-        elif 2 <= target <= 3:
             self.health -= 10
+        elif 2 <= target <= 3:
+            self.health -= 5
         elif target == 4:
-            self.health -= 20
+            self.health -= 15
 
     def attack(self, enemy):
         if self.target != enemy.block_part:

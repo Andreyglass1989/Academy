@@ -3,8 +3,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<title>{% block title %}document{% endblock title %}</title>
+    <link rel="shortcut icon" href="{% static 'image/rocky.png' %}"/>
+	<title>{% block title %}Main{% endblock title %}</title>
 	<link rel="stylesheet" href="{% static 'css/foundation.min.css' %}" crossorigin="anonymous">
 	<link href="{% static 'css/nav_bar.css' %}" rel="stylesheet" type="text/css">
 
@@ -30,6 +30,11 @@
         <ul class="menu">
 
           <li style="hide-for-small-only"><a href="{% url 'room:main' %}">Rooms</a></li>
+          {% if username %}
+            <li><a href="/auth/logout"><span class="glyphicon glyphicon-user" aria-hidden="true">Hello,({{ username|upper }})!</span></a></li>
+          {% else %}
+            <li><a href="/auth/login">Login</a></li>
+          {% endif %}
           <!--<li style="hide-for-small-only"><a href="{% url 'room:create_players' %}">Characters</a></li>
           <li style="hide-for-small-only"><a href="{% url 'room:enemy' %}">Enemy</a></li>-->
           <li class="hide-for-small-only"><a href="#"><img class="logo" src="{% static 'image/name_orange_red.png' %}" width='150px' height='30px'></a></li>
@@ -42,7 +47,7 @@
 </div>
 
 
-
+{% block login %}{% endblock login%}
 <!--end-nav-bar-->
 
 {% block body%}

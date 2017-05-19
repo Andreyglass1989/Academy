@@ -5,11 +5,10 @@ from room.models import Room, Character
 class RoomModelForm(forms.ModelForm):
     class Meta:
         model = Room
-        fields = ['name', 'game_type', 'data_end']
-        exclude = ['data_begin', 'image']
+        fields = ['name', 'game_type',  'image']
+        exclude = ['data_begin', 'data_end',]
 
 class CharacterModelForm(forms.ModelForm):
     class Meta:
         model = Character
-        fields = ['name', 'race',]
-        exclude = ['image']
+        fields = ['name', 'race', 'image']

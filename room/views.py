@@ -10,12 +10,15 @@ from django import forms
 from room.forms import RoomModelForm, CharacterModelForm
 import datetime
 from room.utils import detail_view
-#CBV
+#CBV-----------------
 from django.views.generic import DetailView
 from django.views.generic import ListView
 from django.views.generic import CreateView, UpdateView, DeleteView
-#logging
-import logging
+#CBV------------------
+import logging #logging
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage #pagination
+from django.contrib import auth #auth
+from django.urls import reverse_lazy
 
 logger = logging.getLogger(__name__)
 
@@ -30,9 +33,9 @@ enemy = Character_Demo("HEEEEH","Wolf")
 
 class RoomListView(ListView):
     model = Room
-
     template_name = "main_menu.html"
-    # context_object_name = "rooms"
+    paginate_by = 6
+    context_object_name = "rooms"
     logger.debug("Room list!!")
     # def get_queryset(self):
     #     rooms = Room.objects.all()
@@ -42,7 +45,20 @@ class RoomListView(ListView):
         context = super(RoomListView, self).get_context_data(**kwargs)
         rooms = Room.objects.all()
         context['title'] = "Rooms"
+        #context['rooms'] = rooms
+        paginator = Paginator(rooms, self.paginate_by)
+
+        page = self.request.GET.get('page')
+
+        try:
+            rooms = paginator.page(page)
+        except PageNotAnInteger:
+            rooms = paginator.page(1)
+        except EmptyPage:
+            rooms = paginator.page(paginator.num_pages)
+
         context['rooms'] = rooms
+        context['username'] = auth.get_user(self.request).username
         return context
 
 # def show_room ( request ):   #show_room
@@ -110,8 +126,6 @@ def attack ( request ):
         player_id = request.GET.get("playerId")
         enemy_id = request.GET.get("enemyId")
         print("player_id = %s, enemy_id = %s" %(player_id,enemy_id))
-        # player = Character.objects.get(id=player_id)
-        # enemy = Character.objects.get(id=enemy_id)
         part_enemy = request.GET.get("partEnemy")
         part_player = request.GET.get("partPlayer")
         enemy.choice_target(random.randint(0, 4))
@@ -128,19 +142,35 @@ def attack ( request ):
         print("Target:",enemy.BODY_PARTS[enemy.target])
         print("Block:",enemy.BODY_PARTS[enemy.block_part])
         print("Health:", enemy.health)
-        context = { "heathEnemy": enemy.health,
-                    "healthPlayer": player.health,
-                    }
-        if enemy.health <= 0 or player.health <= 0:
-            print("GameOver")
-            messages.success(request, "GameOver!")
-            # msg = "GAME OVER!!!"
-            # context ={ "msg":msg }
-            return HttpResponseRedirect("/")
+
+        if enemy.health <= 0:
+            print("GameOver! You WIN!!!")
+            messages.success(request, "GameOver! You WIN!!!")
+            #context['message_player_win'] = 'GameOver! You WIN!!!'
+            return HttpResponse("You WIN", content_type='text/html') ##
+        elif player.health <= 0:
+            print("GameOver! You LOST!!!")
+            messages.success(request, "GameOver! You LOST!!!")
+            message1 = 'GameOver! You LOST!!!'
+            return HttpResponse("You LOST", content_type='text/html')  ##
+        elif player.health <= 0 and enemy.health <= 0:
+            print("GameOver! DRAW!!!")
+            messages.success(request, "GameOver! DRAW!!!")
+            return HttpResponse("DRAW", content_type='text/html')
+      #  room.data_end=datetime.datetime.now()
+
+        context = {"healthEnemy": enemy.health,
+                   "Player_Target": player.BODY_PARTS[player.target],
+                   "Player_Block": player.BODY_PARTS[player.block_part],
+                   "healthPlayer": player.health,
+                   "Enemy_Target": enemy.BODY_PARTS[enemy.target],
+                   "Enemy_Block": enemy.BODY_PARTS[enemy.block_part],
+                   }
 
         jsresp = JsonResponse(context)
         print(jsresp.content)
-        return HttpResponseRedirect("fight_room.html", context)#HttpResponse(jsresp.content, content_type="text/html") ##
+
+        return HttpResponse(jsresp.content, content_type="text/html") ##
 
 
         #
@@ -165,9 +195,13 @@ class RoomDetailView(DetailView):
     context_object_name = "characters"
     template_name = "detail.html"
 
-    def get_object(self, queryset=None):
+    def get_context_data(self, **kwargs):
         characters = Character.objects.all()
-        return characters
+        username = auth.get_user(self.request).username
+        context = { "characters": characters,
+                    "username":username}
+        return context
+
 
 #----CBV for detail----#
 
@@ -183,8 +217,10 @@ class RoomCreateView(CreateView):
 
     def form_valid(self, form):
         response = super(RoomCreateView, self).form_valid(form)
-        messages.success(self.request, "Room has been successfully added!")
-        return response
+        data = form.cleaned_data
+        self.object = form.save()
+        messages.success(self.request, "Room *%s* has been successfully added!" % data['name'])
+        return super(RoomCreateView, self).form_valid(form)
 
 class RoomUpdateView(UpdateView):
     model = Room
@@ -201,12 +237,19 @@ class RoomDeleteView(DeleteView):
     model = Room
     template_name = "remove.html"
     #form_class = RoomModelForm
-    success_url = "/"
+    success_url = '/'
+
+    def get_context_data(self, **kwargs):
+        context = super(RoomDeleteView, self).get_context_data(**kwargs)
+        room = self.get_object()
+        context['title'] = room.name
+        return context
 
     def delete(self, request, *args, **kwargs):
-        response = super(RoomDeleteView, self).delete(request, *args, **kwargs)
-        messages.success(self.request, "Room has been deleted.")
-        return response
+        #response = super(RoomDeleteView, self).delete(request, *args, **kwargs)
+        room = self.get_object()
+        messages.success(self.request, "Room %s has been deleted." % room.name)
+        return super(RoomDeleteView, self).delete(request, *args, **kwargs)
 
 #----end CBV for Room ----#
 # --BEGIN-- CHCANGE ROOM #
@@ -272,14 +315,20 @@ class RoomDeleteView(DeleteView):
 
 class CharacterCreateView(CreateView):
     model = Character
+    charact = Character
     template_name = "add.html"
+   #fields = '__all__'
     form_class = CharacterModelForm
-    success_url = "/"
+    success_url = reverse_lazy('room:main')
 
     def form_valid(self, form):
         response = super(CharacterCreateView, self).form_valid(form)
-        messages.success(self.request, "Character has been successfully added!")
-        return response
+        data = form.cleaned_data
+        self.object = form.save()
+        messages.success(self.request, "Character *%s* has been successfully added!" % data['name'])
+        return super(CharacterCreateView, self).form_valid(form)
+
+
 
 class CharacterUpdateView(UpdateView):
     model = Character
@@ -295,13 +344,21 @@ class CharacterUpdateView(UpdateView):
 class CharacterDeleteView(DeleteView):
     model = Character
     template_name = "remove.html"
-    # form_class = RoomModelForm
     success_url = "/"
 
+    def get_context_data(self, **kwargs):
+        context = super(CharacterDeleteView, self).get_context_data(**kwargs)
+        character = self.get_object()
+        context['title'] = character.name
+        return context
+
     def delete(self, request, *args, **kwargs):
-        response = super(CharacterDeleteView, self).delete(request, *args, **kwargs)
-        messages.success(self.request, "Character has been deleted.")
-        return response
+       # response = super(CharacterDeleteView, self).delete(request, *args, **kwargs)
+        character = self.get_object()
+        messages.success(self.request, "Character %s has been deleted." % character.name)
+        return super(CharacterDeleteView, self).delete(request, *args, **kwargs)
+
+
 
 # --BEGIN-- CHCANGE Character #
 # def add_character(request):

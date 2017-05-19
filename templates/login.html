@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}Authorization{% endblock title %}
+
+{% load static %}
+
+{% block CSS %}
+ <link href="{% static 'css/bootstrap.css' %}" rel="stylesheet" type="text/css">
+ <link rel="stylesheet" href="{% static 'css/foundation.min.css' %}" crossorigin="anonymous">
+{% endblock CSS %}
+
+{% block login %}
+
+{% if messages %}
+<div style="margin: 5px" class="messages">
+    {% for message in messages %}
+      <div class="alert alert-danger" role="alert"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"> {{ message }}</span></div>
+    {% endfor %}
+</div>
+{% endif %}
+
+
+ <div style="padding: 50px; position: fixed; top: 50%; left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);" class="small-4 large-4">
+    <form action="/auth/login/" method="post">{% csrf_token%}
+        <label for="username">Username</label>
+        <input type="text" name="username" id="username">
+        <label for="password">Password</label>
+        <input type="password" name="password" id="password">
+        {% if login_error%}
+            <label class="error">{{ login_error }}</label>
+        {% endif %}
+        <input class="button" type="submit" value="Login">
+        <div class="label round secondary"><a href="/auth/register/">Register</a></div>
+    </form>
+ </div>
+{% endblock login %}

@@ -1,5 +1,5 @@
-# from django.shortcuts import render
-# from staff.models import Staff
+from django.shortcuts import render
+
 #
 # # def base(request):
 # #     title = "Base"
@@ -14,3 +14,10 @@
 # 	title = "Staff"
 # 	context = {"title_docum":title, "staffs": staffs}
 # 	return render(request,"base.html",context)
+
+def winner(request):
+    title = "winner"
+    context = {
+        "title":title,
+    }
+    return render(request,"winner.html",context)

@@ -4,6 +4,7 @@
 
 {% block CSS %}
  <link href="{% static 'css/bootstrap.css' %}" rel="stylesheet" type="text/css">
+
 {% endblock CSS %}
 
 {% block title %}Detail Room{% endblock title %}
@@ -23,10 +24,15 @@
 
 <!-- character -->
 <form action="{% url 'room:fight' %}" method="post">
-<div class="small-6 large-6 columns">
-<a href="/add_character"><button type="button" class="btn btn-lg btn-success" data-toggle="popover" title="create new Character"
-		data-content="Right?" style="margin: 0px 0px 5px 10px; "> <span class="glyphicon glyphicon-plus" aria-hidden="true"> </span> Add Character</button></a>
-<br>
+
+    <div class="small-6 large-6 columns">
+{% if username %}
+    <a href="/add_character"><button type="button" class="btn btn-lg btn-success" data-toggle="popover" title="create new Character"
+            data-content="Right?" style="margin: 0px 0px 5px 10px; "> <span class="glyphicon glyphicon-plus" aria-hidden="true"> </span> Add Character</button></a>
+{% endif %}
+    <br>
+
+
     <p style="text-align:center; font-size:20px">Choose your character:</p>
     {% for character in characters %}
         <div class="small-4 large-4 columns">
@@ -37,7 +43,15 @@
             {% endif %}
         <br>
 
-            <input type="checkbox" name="player_id" value="{{character.id}}"><a href="/edit_character/{{ character.id }}"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></a>{{character.name}}-{{character.race}}</span><a href="/remove_character/{{ character.id }}"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a><br>
+            <input type="checkbox" name="player_id" value="{{character.id}}">
+            {% if username %}
+            <a href="/edit_character/{{ character.id }}"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></a></span>
+            {% endif %}
+            {{character.name}}-{{character.race}}
+            {% if username %}
+            <a href="/remove_character/{{ character.id }}"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
+            {% endif %}
+            <br>
 
         </div>
     {% endfor %}
@@ -59,14 +73,22 @@
             {% endif %}
         <br>
 
-            <input type="checkbox" name="enemy_id" value="{{character.id}}"><a href="/edit_character/{{ character.id }}"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></a>{{character.name}}-{{character.race}}</span><a href="/remove_character/{{ character.id }}"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a><br>
+            <input type="checkbox" name="enemy_id" value="{{character.id}}">
+          {% if username %}
+          <a href="/edit_character/{{ character.id }}"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></a></span>
+          {% endif %}
+          {{character.name}}-{{character.race}}
+          {% if username %}
+          <a href="/remove_character/{{ character.id }}"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
+          {% endif %}
+          <br>
 
         </div>
     {% endfor %}
 </div>
 
 
-<input type="submit" value="Fight">
+<input class="button btn btn-danger" type="submit" value="Fight">
 </form>
 
 
