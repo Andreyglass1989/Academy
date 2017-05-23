@@ -1,0 +1,8 @@
+{% if rooms_res.count > 0 %}
+
+    {% for room in rooms_res %}
+        <li><a href="/room_detail/{{room.id}}/">{{ room.name }}</a></li>
+    {% endfor %}
+
+
+{% endif %}

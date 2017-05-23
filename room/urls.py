@@ -7,6 +7,7 @@ import mysite.urls
 app_name = 'room'
 urlpatterns = [
     url(r'^$', RoomListView.as_view(), name= "main"),
+    #url(r'^$', show_room, name= "main"),
     url(r'^create/', create_players, name="create_players"),
    # url(r'^create_room/', create_room, name="create_room"),
 
@@ -47,6 +48,7 @@ urlpatterns = [
     url(r'^enemy/$', choose_enemy, name="enemy"),
     url(r'^fight', fight_room, name="fight"),
     url(r'^attack/$', attack),
+    url(r'^search/$', search),
     #url(r'^attack1/$', attack1, name="attack1"),
    # url(r'^apply/$', course_apply),
    # url(r'^create_room/$', show_rooms),

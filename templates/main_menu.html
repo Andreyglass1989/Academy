@@ -9,6 +9,10 @@
  <link rel="stylesheet" type="text/css" href="{% static 'css/second_list1.css' %}">
 {% endblock CSS %}
 
+{% block scripts %}
+    <script src="{% static 'js/ajax.js' %}"></script>
+{% endblock scripts %}
+
 {% block body %}
 <!-- massages sucsess  START -->
 {% if messages %}
@@ -39,8 +43,16 @@
     <a href="/add_room"><button type="button" class="btn btn-primary" data-toggle="popover" title="create new Room"
             data-content="Right?" style="margin: 0px 0px 5px 10px; "><span class="glyphicon glyphicon-plus" aria-hidden="true"> </span> Add Room</button></a>
 
-    <br>
+
 {% endif %}
+
+<h3>Search</h3>
+{% csrf_token %}
+<input type="text" id="search" name="search"/>
+<ul id="search-results">
+    {% include "ajax_search.html"%}
+</ul>
+<br>
 <!--
 {% for room in rooms %}
 	<div class="col-sm-3 block_blue"> <!--{3/12}-->

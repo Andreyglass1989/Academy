@@ -84,7 +84,7 @@ class RoomListView(ListView):
 #         #"model_form": model_form
 #     }
 #
-#     return render(request, 'main_menu.html', context)
+#     return render_to_response('main_menu.html', context)
 
 def create_players( request ):
    # races = []
@@ -399,6 +399,22 @@ class CharacterDeleteView(DeleteView):
 #         return render(request, 'remove.html', {'title': charact})
 
 # --END-- CHCANGE character #
+
+def search (request):
+    if request.method == "POST":
+        search_text = request.POST['search_text']
+        if search_text > '':
+            rooms_res = Room.objects.filter(name__contains=search_text)
+        else:
+            rooms_res = Room.objects.none()
+            text = 1
+    else:
+        search_text = ''
+    print(rooms_res)
+    return render_to_response('ajax_search.html', {'rooms_res':rooms_res})
+
+
+
 
 @csrf_protect
 
