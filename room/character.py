@@ -31,6 +31,59 @@ class Character_Demo:
     def body_block(self, block_part):
         self.block_part = block_part
 
+    # user: test0
+    # passwd: asdfgh12345
+    #
+    # test1
+    # zxcvbn12345
+    #
+    # test2
+    # poiuy09876
+
+    #test3
+    #lkjhg54321
+
+    #test4
+    #
+
+    #test5
+    #789456123q
+
+    #test6
+    #123456789q
+
+    #test7
+    #qazwsxedc123
+
+    #test8
+    #edcrfv456
+
+    #test9
+    #tgbyhn789
+
+    #test10
+    #q1w2e3r4
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # orc = Character_Demo ("Carl","orc")
 # name = input ("Whats your name?:")
 # race = input ("Input race:")

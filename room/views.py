@@ -108,6 +108,12 @@ def choose_enemy(request):
 
 def fight_room( request ):
     if request.method == "POST":
+        # username = auth.get_user(request).username
+        # if not username:
+        #     p1 = request.POST.get("player_id")
+        #
+        # if username:
+        #     p1 = auth.get_user(request).id
         p1 = request.POST.get("player_id")
         p2 = request.POST.get("enemy_id")
         print(p1)
@@ -147,15 +153,21 @@ def attack ( request ):
             print("GameOver! You WIN!!!")
             messages.success(request, "GameOver! You WIN!!!")
             #context['message_player_win'] = 'GameOver! You WIN!!!'
+            enemy.health = 100
+            player.health = 100
             return HttpResponse("You WIN", content_type='text/html') ##
         elif player.health <= 0:
             print("GameOver! You LOST!!!")
             messages.success(request, "GameOver! You LOST!!!")
             message1 = 'GameOver! You LOST!!!'
+            enemy.health = 100
+            player.health = 100
             return HttpResponse("You LOST", content_type='text/html')  ##
         elif player.health <= 0 and enemy.health <= 0:
             print("GameOver! DRAW!!!")
             messages.success(request, "GameOver! DRAW!!!")
+            enemy.health = 100
+            player.health = 100
             return HttpResponse("DRAW", content_type='text/html')
       #  room.data_end=datetime.datetime.now()
 
@@ -169,11 +181,7 @@ def attack ( request ):
 
         jsresp = JsonResponse(context)
         print(jsresp.content)
-
-        return HttpResponse(jsresp.content, content_type="text/html") ##
-
-
-        #
+        return HttpResponse(jsresp.content, content_type="text/html")
 
 
 # class RoomAddForm(forms.Form):
@@ -198,8 +206,16 @@ class RoomDetailView(DetailView):
     def get_context_data(self, **kwargs):
         characters = Character.objects.all()
         username = auth.get_user(self.request).username
-        context = { "characters": characters,
-                    "username":username}
+        # context = { "characters": characters,
+        #             "username":username}
+        if username:
+            userid = auth.get_user(self.request).id
+            characters_user = Character.objects.get(user_id=userid)
+        if not username:
+            characters_user = None
+        context = {"characters": characters,
+                   "username": username,
+                   "characters_user":characters_user}
         return context
 
 
@@ -328,6 +344,11 @@ class CharacterCreateView(CreateView):
         messages.success(self.request, "Character *%s* has been successfully added!" % data['name'])
         return super(CharacterCreateView, self).form_valid(form)
 
+    def get_initial(self):
+        initial = super(CharacterCreateView, self).get_initial()
+        user = self.request.user
+        self.initial = {'user':user}
+        return self.initial
 
 
 class CharacterUpdateView(UpdateView):
@@ -338,8 +359,9 @@ class CharacterUpdateView(UpdateView):
 
     def form_valid(self, form):
         response = super(CharacterUpdateView, self).form_valid(form)
+        self.object = form.save()
         messages.success(self.request, "The changes have been saved.")
-        return response
+        return super(CharacterUpdateView, self).form_valid(form)
 
 class CharacterDeleteView(DeleteView):
     model = Character

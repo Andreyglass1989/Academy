@@ -1,7 +1,7 @@
 from __future__ import unicode_literals
 from datetime import datetime
 from django.db import models
-
+from django.conf import settings
 
 
 # Create your models here.
@@ -33,6 +33,7 @@ class Room( models.Model ):
 class Character( models.Model ):
     RACE = (("HM","Human"),("EL","Elf"),("OW","Orc"),("DW","Dwarf"),("WW","WareWolf"))
     # room = models.ForeignKey(Room)
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, null=True)
     name = models.CharField(max_length=50)
     BODY_PARTS = ["Head", "Torso", "Left hand", "Right hand", "Lags"]
     race = models.CharField(max_length=3, choices=RACE)
@@ -56,26 +57,26 @@ class Character( models.Model ):
     def __str__(self):
         return self.name
 
-    def hit(self, target):
-        if target == 0:
-            self.health -= 10
-        elif target == 1:
-            self.health -= 8
-        elif 2 <= target <= 3:
-            self.health -= 4
-        elif target == 4:
-            self.health -= 9
-
-    def attack(self, enemy):
-        print(enemy.block_part)
-        if self.target != enemy.block_part:
-            enemy.hit(self.target)
-
-    def choice_target(self, target):
-        self.target = target
-
-    def body_block(self, block_part):
-        self.block_part = block_part
+    # def hit(self, target):
+    #     if target == 0:
+    #         self.health -= 10
+    #     elif target == 1:
+    #         self.health -= 8
+    #     elif 2 <= target <= 3:
+    #         self.health -= 4
+    #     elif target == 4:
+    #         self.health -= 9
+    #
+    # def attack(self, enemy):
+    #     print(enemy.block_part)
+    #     if self.target != enemy.block_part:
+    #         enemy.hit(self.target)
+    #
+    # def choice_target(self, target):
+    #     self.target = target
+    #
+    # def body_block(self, block_part):
+    #     self.block_part = block_part
 
 
 

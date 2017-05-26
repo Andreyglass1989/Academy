@@ -12,7 +12,9 @@
         background-image: url({{ player1.image.url }});
         background-repeat: no-repeat;
         background-position: center center;
-        beckground-size: 100%;
+        height:450px;
+
+
     }
     .player>div{
         height:150px
@@ -21,7 +23,7 @@
         background-image: url({{ enemy1.image.url }});
         background-repeat: no-repeat;
         background-position: center center;
-        beckground-size: 100%;
+        height:450px;
     }
     .enemy>div{
         height:150px;
@@ -45,11 +47,11 @@
 
 {% endblock CSS %}
 
-<div id="room" data-id="{{ id }}">
+
 
 
 {% block body %}
-
+<div id="room" data-id="{{ id }}">
 <!--{% if messages %}
 <div style="margin: 5px" class="messages">
     {% for message in messages %}
@@ -58,14 +60,15 @@
 </div>
 {% endif %}-->
 
-                <div style="margin-left:25px"><button id="fight" class="btn btn-danger">Attack</button>
+                <div style="margin-left:25px;"><button id="fight" class="btn btn-danger">Attack</button>
                     <a href="/"><button class="btn btn-info">Return to rooms</button></a></div>
-  <div class="alert alert-danger" role="alert" id="gameresult" ></div>
+  <div id="gameresult" ></div>
+        <br/>
 
+        <div class="container-fluid" >
+            <canvas width="600" height="450" id="fireworks-canvas" style="background:#ffffff; display:none; float:left"></canvas>
 
-        <div class="container-fluid">
-
-            <div class="col-xs-6" style="padding:0px">
+            <div class="col-xs-6" style="padding:0px;">
                 <div class="col-xs-3 player_name" data-id="{{ player1.id }}" style="font-size:20px">{{ player1.name }}</div>
                 <div class="col-xs-9 progress">
                   <div id="player" class="progress-bar progress-bar-info progress-bar-striped active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: {{player1.health}}%"><span id="player_health" class="glyphicon glyphicon-heart" style="font-size:15px" aria-hidden="true"></span>%</div>
@@ -84,7 +87,8 @@
 
             <div class="background-room">
 
-                <div class="col-xs-6 player">
+                <div class="col-xs-6 player" style="display:inline">
+
                         <div class="col-xs-12 click_me_player" data-part="0"></div>
                         <div class="col-xs-4 click_me_player" data-part="2"></div>
                         <div class="col-xs-4 click_me_player" data-part="1"></div>
@@ -130,4 +134,31 @@
 
 {% endblock body %}
 
-{% block scripts %}<script src="{% static 'js/fight1.js' %}"></script>{% endblock scripts %}
+{% block scripts %}<script src="{% static 'js/fight1.js' %}"></script>
+
+    <script src="{% static 'js/fireworks.js' %}"></script>
+    <script>
+        window.onload = function () {
+            var firework = JS_FIREWORKS.Fireworks({
+                id : 'fireworks-canvas',
+                hue : 120,
+                particleCount : 50,
+                delay : 0,
+                minDelay : 20,
+                maxDelay : 40,
+                boundaries : {
+                    top: 50,
+                    bottom: 240,
+                    left: 50,
+                    right: 590
+                },
+                fireworkSpeed : 2,
+                fireworkAcceleration : 1.05,
+                particleFriction : .95,
+                particleGravity : 1.5
+            });
+            firework.start();
+        };
+    </script>
+
+            {% endblock scripts %}

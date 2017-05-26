@@ -36,7 +36,7 @@ def register (request):
             new_user_form.save()
             new_user = auth.authenticate(username=new_user_form.cleaned_data['username'], password=new_user_form.cleaned_data['password2'])
             auth.login(request, new_user)
-            return redirect("/")
+            return redirect("room:add_character")
         else:
             args['form'] = new_user_form
     return  render(request, "register.html", args)

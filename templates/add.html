@@ -3,6 +3,15 @@
 {% load static %}
 {% block CSS %}
  <link href="{% static 'css/bootstrap.css' %}" rel="stylesheet" type="text/css">
+<style>
+  select{
+    height: 3.4375rem;
+    }
+
+  #id_name{
+    height: 3.4375rem;
+  }
+</style>
 {% endblock CSS %}
 
 {% block title %}Add {{ title }}{% endblock title %}
@@ -11,7 +20,7 @@
 
 <h1>ADD {{ title }}</h1>
 <form method="post" enctype="multipart/form-data">{% csrf_token %}
-    <div class="small-5 large-5" style="margin-left:10px">{{ form.as_p }}</div>
+    <div class="small-5 large-5" style="margin-left:10px;">{{ form.as_p }}</div>
     <div class="small-5 large-5">
          {% if uploaded_file_url %}
     <p>File uploaded at: <a href="{{ uploaded_file_url }}">{{ uploaded_file_url }}</a></p>

@@ -54,9 +54,11 @@ $(document).ready(function() {
                             console.log("GameOver! You WIN!!!");
                             $("#gameresult").html("<h1>GameOver! You WIN!!!</h1>");
                             $(".enemy").fadeOut('slow');
-                            $("#enemy, .progress, .enemy_name, table, col-xs-6").fadeOut('slow');
+                            $("#enemy, .progress, .enemy_name, table").fadeOut('slow');
                             document.getElementById('fight').disabled = true;
                             alert("GameOver! You WIN!!!:)");
+                            $("#fireworks-canvas").css("display", "inline")
+
                             }
                         else {
                             console.log("fight time");
